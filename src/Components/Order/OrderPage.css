@@ -1,0 +1,65 @@
+@import url("../Variables.css");
+
+/* Espaçamento entre os elementos */
+.pedidos-page {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  /*estilo tabelas de forms e list*/
+.pedidos-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: hsl(var(--muted));
+    border-radius: var(--radius);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+/* Responsividade */
+@media (max-width: 768px) {
+  .pedidos-page {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .pedido-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+  }
+
+  .pedido-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    width: 48%;
+    font-size: 0.85rem;
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pedido-item {
+    padding: 10px;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .pedido-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

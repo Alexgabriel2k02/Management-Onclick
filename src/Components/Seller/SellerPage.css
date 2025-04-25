@@ -1,0 +1,23 @@
+@import url("../Variables.css");
+
+.clientes-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .clientes-page {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .clientes-form,
+  .clientes-list {
+    max-width: 100%;
+    padding: 1rem;
+  }
+}

@@ -1,0 +1,51 @@
+.clientes-list {
+    flex: 2;
+    background: hsl(var(--secondary) / 0.2); /* Fundo semitransparente */
+    border-radius: var(--radius);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px); /* Efeito de desfoque */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Borda suave */
+    padding: 2rem;
+  }
+
+  .clientes-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .clientes-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: hsl(var(--muted));
+    border-radius: var(--radius);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .clientes-list li span {
+    font-size: 1rem;
+    font-weight: 500;
+    color: hsl(var(--foreground));
+  }
+
+  .clientes-list li button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    background-color: hsl(var(--danger));
+    color: hsl(var(--primary-foreground));
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .clientes-list li button:hover {
+    background-color: hsla(var(--danger) / 0.8);
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }

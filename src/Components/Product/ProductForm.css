@@ -1,0 +1,92 @@
+@import url('../Variables.css');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+.text-primary {
+  color: hsl(var(--primary));
+  font-weight: 700;
+}
+
+.container h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.5rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background-color: hsl(var(--muted));
+  transition: border-color 0.3s, box-shadow 0.3s;
+  margin-bottom: 1rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 5px hsla(var(--primary) / 0.3);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form > * {
+  margin-bottom: 1.5rem;
+}
+
+.produto-nome {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.btn-primary {
+  display: block;
+  text-align: center;
+  padding: 0.75rem 1.5rem;
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
+  cursor: pointer;
+  border: none;
+  margin-top: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Responsividade para tela */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  input {
+    font-size: 0.9rem;
+  }
+
+  button {
+    font-size: 1rem;
+  }
+}
