@@ -1,16 +1,48 @@
+@import url("../Variables.css");
+
 form {
+  max-width: 1000px; /* Aumenta a largura máxima do formulário */
+  margin: 20px auto; /* Centraliza o formulário na página */
+  padding: 2rem;
+  background: hsl(var(--secondary) / 0.2); /* Fundo semitransparente */
+  border-radius: var(--radius);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px); /* Efeito de desfoque */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Borda suave */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 3px; /* Reduz ainda mais o espaçamento entre os campos */
   max-width: 400px;
   margin: 0 auto; /* Centraliza o formulário na página */
+  flex-wrap: wrap; /* Permite que os campos quebrem linha se necessário */
+  justify-content: space-between; /* Espaça os campos horizontalmente */
+  gap: 20px; /* Espaçamento entre os elementos */
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: hsl(var(--foreground));
+  flex: 1 1 100%; /* O título ocupa toda a largura */
 }
 
 label {
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 1px; /* Reduz o espaço entre o rótulo e o campo */
+  font-size: 1rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  margin-bottom: 5px;
+}
+
+.input-group {
+  flex: 1 1 calc(48% - 20px); /* Cada campo ocupa 48% da largura menos o espaçamento */
+  display: flex;
+  flex-direction: column; /* Organiza o rótulo e o input verticalmente */
 }
 
 input {
@@ -19,6 +51,18 @@ input {
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background-color: hsl(var(--muted));
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 5px hsla(var(--primary) / 0.3);
 }
 
 button {
@@ -27,16 +71,64 @@ button {
   font-size: 14px;
   color: #fff;
   background-color: #007bff;
+  flex: 1 1 100%; /* Botão ocupa toda a largura disponível */
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: hsl(var(--primary-foreground));
+  background-color: hsl(var(--primary));
   border: none;
   border-radius: 4px;
+  border-radius: var(--radius);
   cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 button:hover {
   background-color: #0056b3;
+  background-color: hsla(var(--primary) / 0.9);
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 h2 {
   text-align: center;
   margin-bottom: 10px; /* Reduz o espaço abaixo do título */
+@media (max-width: 1024px) {
+  .input-group {
+    flex: 1 1 calc(100% - 20px); /* Em telas médias, os campos ocupam 100% da largura */
+  }
+
+  form {
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .input-group {
+    flex: 1 1 100%; /* Em telas menores, os campos ocupam 100% da largura */
+  }
+
+  form {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  button {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
 }
