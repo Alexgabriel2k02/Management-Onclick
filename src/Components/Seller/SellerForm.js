@@ -10,9 +10,14 @@ const SellerForm = ({ onAddSeller }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newSeller = { name, email, phone };
+
+    // Cria o objeto do novo vendedor
     const newSeller = { name, email, phone, cnpj, password };
+
+    // Chama a função de callback para adicionar o vendedor
     onAddSeller(newSeller);
+
+    // Limpa os campos do formulário
     setName("");
     setEmail("");
     setPhone("");
@@ -23,27 +28,6 @@ const SellerForm = ({ onAddSeller }) => {
   return (
     <form onSubmit={handleSubmit} className="seller-form">
       <h2>Cadastrar Novo Vendedor</h2>
-      <label>Nome:</label>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <label>Email:</label>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <label>Telefone:</label>
-      <input
-        type="text"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-        required
-      />
 
       <div className="input-group">
         <label htmlFor="name">Nome:</label>
