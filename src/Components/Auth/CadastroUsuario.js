@@ -12,9 +12,6 @@ const CadastroUsuario = () => {
 
   const handleCadastro = (e) => {
     e.preventDefault();
-    localStorage.setItem("registered", "true"); // Marca o usuário como registrado
-    localStorage.setItem("userData", JSON.stringify({ nome, email, senha })); // Salva os dados do usuário
-    navigate("/login"); // Redireciona para o login
 
     // Salva os dados no localStorage
     localStorage.setItem("registered", "true");
@@ -28,31 +25,8 @@ const CadastroUsuario = () => {
   };
 
   return (
-    <div>
     <div className="cadastro-container">
       <h2>Cadastro</h2>
-      <form onSubmit={handleCadastro}>
-        <label>Nome:</label>
-        <input
-          type="text"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          required
-        />
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <label>Senha:</label>
-        <input
-          type="password"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
-          required
-        />
       <form onSubmit={handleCadastro} className="cadastro-form">
         <div className="input-group">
           <label htmlFor="nome">Nome:</label>
