@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import SellerForm from "./SellerForm";
 import SellerList from "./SellerList";
+import { fetchWithAuth } from "../Services/Api";
+import { activateSeller } from "../Services/SellerService";
 import "./SellerPage.css";
 
 const SellerPage = () => {
@@ -10,68 +12,38 @@ const SellerPage = () => {
 
   // Buscar vendedores da API ao carregar a página
   useEffect(() => {
-    fetch("http://localhost:3001/sellers", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao buscar vendedores");
-        }
-        return response.json();
-      })
-      .then((data) => {
+    const fetchSellers = async () => {
+      try {
+        const data = await fetchWithAuth("/sellers", { method: "GET" });
         setSellers(data);
-        setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         setError(err.message);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchSellers();
   }, []);
 
   // Adicionar vendedor na API
-  const handleAddSeller = (newSeller) => {
-    fetch("http://localhost:3001/sellers", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(newSeller),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao adicionar vendedor");
-        }
-        return response.json();
-      })
-      .then((addedSeller) => {
-        setSellers([...sellers, addedSeller]);
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
+  const handleAddSeller = async (newSeller) => {
+    try {
+      const addedSeller = await activateSeller(newSeller);
+      setSellers((prevSellers) => [...prevSellers, addedSeller]);
+    } catch (err) {
+      alert(`Erro ao adicionar vendedor: ${err.message}`);
+    }
   };
 
   // Excluir vendedor na API
-  const handleDeleteSeller = (id) => {
-    fetch(`http://localhost:3001/sellers/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao excluir vendedor");
-        }
-        setSellers(sellers.filter((seller) => seller.id !== id));
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
+  const handleDeleteSeller = async (id) => {
+    try {
+      await fetchWithAuth(`/sellers/${id}`, { method: "DELETE" });
+      setSellers((prevSellers) => prevSellers.filter((seller) => seller.id !== id));
+    } catch (err) {
+      alert(`Erro ao excluir vendedor: ${err.message}`);
+    }
   };
 
   if (loading) {

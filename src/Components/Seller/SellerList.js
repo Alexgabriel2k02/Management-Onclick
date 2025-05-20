@@ -1,20 +1,45 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "./SellerList.css";
 
 const SellerList = ({ sellers, onDeleteSeller }) => {
+  if (!sellers || sellers.length === 0) {
+    return <p>Nenhum vendedor cadastrado.</p>;
+  }
+
   return (
-    <div>
+    <div className="seller-list">
       <h2>Lista de Vendedores</h2>
       <ul>
         {sellers.map((seller) => (
-          <li key={seller.id}>
-            {seller.name} - {seller.email} - {seller.phone}
-            <button onClick={() => onDeleteSeller(seller.id)}>Excluir</button>
+          <li key={seller.id} className="seller-item">
+            <span>
+              {seller.name} - {seller.email} - {seller.phone}
+            </span>
+            <button
+              className="btn-delete"
+              onClick={() => onDeleteSeller(seller.id)}
+            >
+              Excluir
+            </button>
           </li>
         ))}
       </ul>
     </div>
   );
+};
+
+// Validação das props
+SellerList.propTypes = {
+  sellers: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      phone: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  onDeleteSeller: PropTypes.func.isRequired,
 };
 
 export default SellerList;
