@@ -1,23 +1,38 @@
 import React, { useState } from "react";
+import { createOrder } from "../Services/OrderService"; // Importa o serviço
 import "./OrderForm.css";
 
-const OrderForm = ({ onAddOrder }) => {
+const OrderForm = () => {
   const [seller, setSeller] = useState("");
   const [product, setProduct] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
     const newOrder = { seller, product, quantity: parseInt(quantity) };
-    onAddOrder(newOrder);
-    setSeller("");
-    setProduct("");
-    setQuantity("");
+
+    try {
+      await createOrder(newOrder); // Envia o pedido ao backend
+      setMessage("Pedido cadastrado com sucesso!");
+      setSeller("");
+      setProduct("");
+      setQuantity("");
+    } catch (error) {
+      setMessage(`Erro ao cadastrar pedido: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h2>Cadastrar Novo Pedido</h2>
+      {message && <p className="message">{message}</p>}
       <label>Vendedor:</label>
       <input
         type="text"
@@ -39,7 +54,9 @@ const OrderForm = ({ onAddOrder }) => {
         onChange={(e) => setQuantity(e.target.value)}
         required
       />
-      <button type="submit">Salvar Pedido</button>
+      <button type="submit" disabled={loading}>
+        {loading ? "Salvando..." : "Salvar Pedido"}
+      </button>
     </form>
   );
 };

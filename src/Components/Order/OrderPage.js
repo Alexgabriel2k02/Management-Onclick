@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import OrderForm from "./OrderForm";
 import OrderList from "./OrderList";
+import { fetchWithAuth } from "../Services/Api"; // Reutiliza fetchWithAuth
 import "./OrderPage.css";
 
 const OrderPage = () => {
@@ -10,49 +11,31 @@ const OrderPage = () => {
 
   // Buscar pedidos da API ao carregar a página
   useEffect(() => {
-    fetch("http://localhost:3001/orders", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao buscar pedidos");
-        }
-        return response.json();
-      })
-      .then((data) => {
+    const fetchOrders = async () => {
+      try {
+        const data = await fetchWithAuth("/orders", { method: "GET" });
         setOrders(data);
-        setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         setError(err.message);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchOrders();
   }, []);
 
   // Adicionar pedido na API
-  const handleAddOrder = (newOrder) => {
-    fetch("http://localhost:3001/orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(newOrder),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao adicionar pedido");
-        }
-        return response.json();
-      })
-      .then((addedOrder) => {
-        setOrders([...orders, addedOrder]);
-      })
-      .catch((err) => {
-        alert(err.message);
+  const handleAddOrder = async (newOrder) => {
+    try {
+      const addedOrder = await fetchWithAuth("/orders", {
+        method: "POST",
+        body: JSON.stringify(newOrder),
       });
+      setOrders((prevOrders) => [...prevOrders, addedOrder]);
+    } catch (err) {
+      alert(`Erro ao adicionar pedido: ${err.message}`);
+    }
   };
 
   if (loading) {
