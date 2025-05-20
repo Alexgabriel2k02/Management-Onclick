@@ -1,94 +1,89 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { registerSeller } from "../../Services/AuthService"; // Serviço de cadastro
 import "./CadastroUsuario.css";
 
 const CadastroUsuario = () => {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [cnpj, setCnpj] = useState("");
   const [senha, setSenha] = useState("");
+  const [cnpj, setCnpj] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleCadastro = (e) => {
+  const handleCadastro = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setMessage("");
 
-    // Salva os dados no localStorage
-    localStorage.setItem("registered", "true");
-    localStorage.setItem(
-      "userData",
-      JSON.stringify({ nome, email, phone, cnpj, senha })
-    );
+    try {
+      // Faz a chamada ao backend para cadastrar o usuário
+      const response = await registerSeller({ nome, email, senha, cnpj, telefone });
 
-    // Redireciona para a página de login
-    navigate("/login");
+      // Salva os dados do usuário no localStorage
+      localStorage.setItem("user", JSON.stringify(response.user)); // Armazena os dados do usuário
+      localStorage.setItem("token", response.token); // Armazena o token JWT, se retornado
+
+      setMessage("Cadastro realizado com sucesso!");
+      setTimeout(() => navigate("/login"), 2000); // Redireciona para a página de login após 2 segundos
+    } catch (error) {
+      console.error("Erro ao cadastrar usuário:", error);
+      setMessage("Erro ao cadastrar. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="cadastro-container">
       <h2>Cadastro</h2>
-      <form onSubmit={handleCadastro} className="cadastro-form">
-        <div className="input-group">
-          <label htmlFor="nome">Nome:</label>
-          <input
-            id="nome"
-            type="text"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            placeholder="Digite seu nome"
-            required
-          />
-        </div>
+      {message && <p className="message">{message}</p>}
+      <form onSubmit={handleCadastro}>
+        <label>Nome:</label>
+        <input
+          type="text"
+          value={nome}
+          onChange={(e) => setNome(e.target.value)}
+          required
+        />
 
-        <div className="input-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Digite seu email"
-            required
-          />
-        </div>
+        <label>Email:</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-        <div className="input-group">
-          <label htmlFor="phone">Telefone:</label>
-          <input
-            id="phone"
-            type="text"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="Digite seu telefone"
-            required
-          />
-        </div>
+        <label>Senha:</label>
+        <input
+          type="password"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+          required
+        />
 
-        <div className="input-group">
-          <label htmlFor="cnpj">CNPJ:</label>
-          <input
-            id="cnpj"
-            type="text"
-            value={cnpj}
-            onChange={(e) => setCnpj(e.target.value)}
-            placeholder="Digite seu CNPJ"
-            required
-          />
-        </div>
+        <label>CNPJ:</label>
+        <input
+          type="text"
+          value={cnpj}
+          onChange={(e) => setCnpj(e.target.value)}
+          required
+        />
 
-        <div className="input-group">
-          <label htmlFor="senha">Senha:</label>
-          <input
-            id="senha"
-            type="password"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-            placeholder="Digite sua senha"
-            required
-          />
-        </div>
+        <label>Telefone:</label>
+        <input
+          type="tel"
+          value={telefone}
+          onChange={(e) => setTelefone(e.target.value)}
+          required
+        />
 
-        <button type="submit">Concluir Cadastro</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Cadastrando..." : "Concluir Cadastro"}
+        </button>
       </form>
     </div>
   );
