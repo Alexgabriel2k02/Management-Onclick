@@ -1,32 +1,46 @@
 import React, { useState } from "react";
+import { createProduct } from "../Services/ProductService"; // Importa o serviço
 import "./ProductForm.css";
 
-const ProductForm = ({ onAddProduct }) => {
+const ProductForm = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
   const [status, setStatus] = useState("Ativo");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
     const newProduct = {
-      id: Date.now(),
       name,
       price: parseFloat(price),
       stock: parseInt(stock),
       status,
     };
-    onAddProduct(newProduct);
-    setName("");
-    setPrice("");
-    setStock("");
-    setStatus("Ativo");
+
+    try {
+      await createProduct(newProduct); // Envia o produto ao backend
+      setMessage("Produto cadastrado com sucesso!");
+      setName("");
+      setPrice("");
+      setStock("");
+      setStatus("Ativo");
+    } catch (error) {
+      setMessage(`Erro ao cadastrar produto: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div>
       <main className="container">
         <h2>Cadastrar Novo Produto</h2>
+        {message && <p className="message">{message}</p>}
         <form onSubmit={handleSubmit}>
           <label htmlFor="name">Nome do Produto:</label>
           <input
@@ -70,8 +84,8 @@ const ProductForm = ({ onAddProduct }) => {
             <option value="Inativo">Inativo</option>
           </select>
 
-          <button type="submit" className="btn-primary">
-            Salvar Produto
+          <button type="submit" className="btn-primary" disabled={loading}>
+            {loading ? "Salvando..." : "Salvar Produto"}
           </button>
         </form>
       </main>

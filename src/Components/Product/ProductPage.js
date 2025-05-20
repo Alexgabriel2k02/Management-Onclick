@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import ProductList from "./ProductList";
 import ProductForm from "./ProductForm";
+import {
+  listProducts,
+  createProduct,
+  updateProduct,
+  inactivateProduct,
+} from "../Services/ProductService"; // Importa o serviço
 import "./ProductPage.css";
 
 const ProductPage = () => {
@@ -8,94 +14,59 @@ const ProductPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Buscar produtos ao carregar a página
   useEffect(() => {
-    fetch("http://localhost:3001/products", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao buscar produtos");
-        }
-        return response.json();
-      })
-      .then((data) => {
+    const fetchProducts = async () => {
+      try {
+        const data = await listProducts(); // Usa o ProductService
         setProducts(data);
-        setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         setError(err.message);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchProducts();
   }, []);
 
-  const handleAddProduct = (newProduct) => {
-    fetch("http://localhost:3001/products", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(newProduct),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao adicionar produto");
-        }
-        return response.json();
-      })
-      .then((addedProduct) => {
-        setProducts([...products, addedProduct]);
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
+  // Adicionar produto
+  const handleAddProduct = async (newProduct) => {
+    try {
+      const addedProduct = await createProduct(newProduct); // Usa o ProductService
+      setProducts((prevProducts) => [...prevProducts, addedProduct]);
+    } catch (err) {
+      alert(`Erro ao adicionar produto: ${err.message}`);
+    }
   };
 
-  const handleDeleteProduct = (id) => {
-    fetch(`http://localhost:3001/products/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao excluir produto");
-        }
-        setProducts(products.filter((product) => product.id !== id));
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
+  // Excluir produto
+  const handleDeleteProduct = async (id) => {
+    try {
+      await inactivateProduct(id); // Usa o ProductService
+      setProducts((prevProducts) =>
+        prevProducts.filter((product) => product.id !== id)
+      );
+    } catch (err) {
+      alert(`Erro ao excluir produto: ${err.message}`);
+    }
   };
 
-  const handleEditProduct = (updatedProduct) => {
-    fetch(`http://localhost:3001/products/${updatedProduct.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(updatedProduct),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao editar produto");
-        }
-        return response.json();
-      })
-      .then((editedProduct) => {
-        setProducts(
-          products.map((product) =>
-            product.id === editedProduct.id ? editedProduct : product
-          )
-        );
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
+  // Editar produto
+  const handleEditProduct = async (updatedProduct) => {
+    try {
+      const editedProduct = await updateProduct(
+        updatedProduct.id,
+        updatedProduct
+      ); // Usa o ProductService
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product.id === editedProduct.id ? editedProduct : product
+        )
+      );
+    } catch (err) {
+      alert(`Erro ao editar produto: ${err.message}`);
+    }
   };
 
   if (loading) {
