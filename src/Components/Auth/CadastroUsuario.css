@@ -95,6 +95,8 @@ button:hover {
 h2 {
   text-align: center;
   margin-bottom: 10px; /* Reduz o espaço abaixo do título */
+} /* Adicionada a chave de fechamento */
+
 @media (max-width: 1024px) {
   .input-group {
     flex: 1 1 calc(100% - 20px); /* Em telas médias, os campos ocupam 100% da largura */
