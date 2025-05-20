@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { listProducts } from "../Services/ProductService";
+import { createSale } from "../Services/SaleService";
 import "./SalePage.css";
 
 const SalePage = () => {
@@ -9,21 +11,21 @@ const SalePage = () => {
 
   // Buscar produtos disponíveis para venda
   useEffect(() => {
-    fetch("http://localhost:3001/products", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Filtra apenas produtos ativos
+    const fetchProducts = async () => {
+      try {
+        const data = await listProducts(); // Usa o ProductService
         const activeProducts = data.filter((product) => product.status === "Ativo");
         setProducts(activeProducts);
-      })
-      .catch((error) => console.error("Erro ao buscar produtos:", error));
+      } catch (error) {
+        console.error("Erro ao buscar produtos:", error);
+        setMessage("Erro ao carregar produtos.");
+      }
+    };
+
+    fetchProducts();
   }, []);
 
-  const handleSale = (e) => {
+  const handleSale = async (e) => {
     e.preventDefault();
 
     // Validações
@@ -45,30 +47,15 @@ const SalePage = () => {
       price: product.price,
     };
 
-    // Enviar venda para a API
-    fetch("http://localhost:3001/sales", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(newSale),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erro ao registrar venda.");
-        }
-        return response.json();
-      })
-      .then(() => {
-        setMessage("Venda registrada com sucesso!");
-        setQuantity("");
-        setSelectedProduct("");
-      })
-      .catch((error) => {
-        console.error("Erro ao registrar venda:", error);
-        setMessage("Erro ao registrar venda.");
-      });
+    try {
+      await createSale(newSale); // Usa o SaleService
+      setMessage("Venda registrada com sucesso!");
+      setQuantity("");
+      setSelectedProduct("");
+    } catch (error) {
+      console.error("Erro ao registrar venda:", error);
+      setMessage("Erro ao registrar venda.");
+    }
   };
 
   return (
