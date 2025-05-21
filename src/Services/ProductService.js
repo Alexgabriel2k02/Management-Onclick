@@ -31,3 +31,4 @@ export const inactivateProduct = (productId) => {
     method: "PATCH",
   });
 };
+

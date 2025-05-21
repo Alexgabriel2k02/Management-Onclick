@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import SellerForm from "./SellerForm";
 import SellerList from "./SellerList";
-import { fetchWithAuth } from "../Services/Api";
-import { activateSeller } from "../Services/SellerService";
+import { fetchWithAuth } from "../../Services/Api";
+import { activateSeller } from "../../Services/SellerService";
 import "./SellerPage.css";
 
 const SellerPage = () => {

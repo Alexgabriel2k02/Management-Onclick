@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createProduct } from "../Services/ProductService"; // Importa o serviço
+import { createProduct } from "../../Services/ProductService"; // Importa o serviço
 import "./ProductForm.css";
 
 const ProductForm = () => {
@@ -18,7 +18,7 @@ const ProductForm = () => {
     const newProduct = {
       name,
       price: parseFloat(price),
-      stock: parseInt(stock),
+      quantity: parseInt(stock),
       status,
     };
 

@@ -19,12 +19,18 @@ const Login = () => {
       // Faz a chamada ao backend para autenticação
       const response = await login(email, senha);
 
-      // Salva o token e outros dados retornados pelo backend no localStorage
-      localStorage.setItem("token", response.token); // Armazena o token JWT
-      localStorage.setItem("user", JSON.stringify(response.user)); // Armazena os dados do usuário
+      console.log("Resposta do login:", response); // Log para depuração
+
+      // Ajuste para garantir que token e user existam na resposta
+      const token = response.token || response.data?.token;
+      const user = response.user || response.data?.user;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("registered", "true"); // Marca como registrado
 
       setMessage("Login realizado com sucesso!");
-      setTimeout(() => navigate("/"), 2000); // Redireciona para a página inicial após 2 segundos
+      navigate("/home"); // Redireciona para a tela de gerenciamento após login
     } catch (error) {
       console.error("Erro ao fazer login:", error);
       setMessage("Email ou senha incorretos!");

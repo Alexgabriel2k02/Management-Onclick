@@ -20,14 +20,22 @@ const CadastroUsuario = () => {
 
     try {
       // Faz a chamada ao backend para cadastrar o usuário
-      const response = await registerSeller({ nome, email, senha, cnpj, telefone });
+      const response = await registerSeller({
+        name: nome,
+        email: email,
+        password: senha,
+        cnpj: cnpj,
+        phone: telefone,
+        status: "Inativo", // Garante que o status seja enviado como Inativo
+      });
 
       // Salva os dados do usuário no localStorage
       localStorage.setItem("user", JSON.stringify(response.user)); // Armazena os dados do usuário
       localStorage.setItem("token", response.token); // Armazena o token JWT, se retornado
+      localStorage.setItem("registered", "true"); // Marca como registrado
 
       setMessage("Cadastro realizado com sucesso!");
-      setTimeout(() => navigate("/login"), 2000); // Redireciona para a página de login após 2 segundos
+      setTimeout(() => navigate("/ativar-vendedor"), 2000); // Redireciona para ativação após 2 segundos
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
       setMessage("Erro ao cadastrar. Tente novamente.");

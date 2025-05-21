@@ -6,7 +6,7 @@ import {
   createProduct,
   updateProduct,
   inactivateProduct,
-} from "../Services/ProductService"; // Importa o serviço
+} from "../../Services/ProductService"; // Importa o serviço
 import "./ProductPage.css";
 
 const ProductPage = () => {
@@ -53,20 +53,9 @@ const ProductPage = () => {
   };
 
   // Editar produto
-  const handleEditProduct = async (updatedProduct) => {
-    try {
-      const editedProduct = await updateProduct(
-        updatedProduct.id,
-        updatedProduct
-      ); // Usa o ProductService
-      setProducts((prevProducts) =>
-        prevProducts.map((product) =>
-          product.id === editedProduct.id ? editedProduct : product
-        )
-      );
-    } catch (err) {
-      alert(`Erro ao editar produto: ${err.message}`);
-    }
+  const handleEditProduct = (product) => {
+    // Redireciona para a página de edição com o id do produto
+    window.location.href = `/product/edit/${product.id}`;
   };
 
   if (loading) {

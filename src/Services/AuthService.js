@@ -16,11 +16,11 @@ export const registerSeller = async (userData) => {
 };
 
 // Função para ativar um vendedor
-export const activateSeller = async (sellerId) => {
+export const activateSeller = async ({ phone, code }) => {
   const response = await fetch(`${API_URL}/vendedores/activate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ sellerId }),
+    body: JSON.stringify({ phone, code }),
   });
 
   if (!response.ok) {
@@ -38,11 +38,35 @@ export const login = async (email, password) => {
     body: JSON.stringify({ email, password }),
   });
 
+  console.log("Resposta completa do fetch login:", response);
+
   if (!response.ok) {
     throw new Error("Erro ao fazer login");
   }
 
-  return response.json(); // Retorna os dados do backend
+  const data = await response.json();
+
+  console.log("Dados JSON da resposta do login:", data);
+
+  return data; // Retorna os dados do backend
+};
+
+export const getToken = () => {
+  const token = localStorage.getItem("token");
+  return token && token !== "undefined" ? token : null;
+};
+
+export const getUser = () => {
+  const userStr = localStorage.getItem("user");
+  if (!userStr || userStr === "undefined") {
+    return null;
+  }
+  try {
+    return JSON.parse(userStr);
+  } catch (e) {
+    console.error("Erro ao parsear usuário do localStorage", e);
+    return null;
+  }
 };
 
 // Função para fazer login de um cliente

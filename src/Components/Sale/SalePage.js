@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { listProducts } from "../Services/ProductService";
-import { createSale } from "../Services/SaleService";
+import { listProducts } from "../../Services/ProductService";
+import { createSale } from "../../Services/SaleService";
 import "./SalePage.css";
 
 const SalePage = () => {

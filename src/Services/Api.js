@@ -17,6 +17,10 @@ export const fetchWithAuth = async (url, options = {}) => {
   });
 
   if (!response.ok) {
+    if (response.status === 401 || response.status === 422) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
     const error = await response.json();
     throw new Error(error.message || "Erro na requisição");
   }
