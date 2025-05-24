@@ -1,19 +1,18 @@
-const BASE_URL = "http://localhost:5000"; // URL base do backend
+const BASE_URL = "http://localhost:5000"; // URL base do backend Flask
 
 export const fetchWithAuth = async (url, options = {}) => {
   const token = localStorage.getItem("token");
+  const isFormData = options.body instanceof FormData;
 
   const headers = {
-    "Content-Type": "application/json",
-    ...(token && { Authorization: `Bearer ${token}` }), // Adiciona o token JWT, se existir
+    ...(isFormData ? {} : { "Content-Type": "application/json" }),
+    ...(token && { Authorization: `Bearer ${token}` }),
+    ...options.headers,
   };
 
   const response = await fetch(`${BASE_URL}${url}`, {
     ...options,
-    headers: {
-      ...headers,
-      ...options.headers,
-    },
+    headers,
   });
 
   if (!response.ok) {
@@ -21,7 +20,12 @@ export const fetchWithAuth = async (url, options = {}) => {
       localStorage.removeItem("token");
       window.location.href = "/login";
     }
-    const error = await response.json();
+    let error;
+    try {
+      error = await response.json();
+    } catch {
+      error = { message: await response.text() };
+    }
     throw new Error(error.message || "Erro na requisição");
   }
 

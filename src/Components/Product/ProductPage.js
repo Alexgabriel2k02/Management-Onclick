@@ -4,7 +4,6 @@ import ProductForm from "./ProductForm";
 import {
   listProducts,
   createProduct,
-  updateProduct,
   inactivateProduct,
 } from "../../Services/ProductService"; // Importa o serviço
 import "./ProductPage.css";

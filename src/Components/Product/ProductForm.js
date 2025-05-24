@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createProduct } from "../../Services/ProductService"; // Importa o serviço
+import { createProduct } from "../../Services/ProductService";
 import "./ProductForm.css";
 
 const ProductForm = () => {
@@ -7,6 +7,7 @@ const ProductForm = () => {
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
   const [status, setStatus] = useState("Ativo");
+  const [img, setImg] = useState(null); // Novo estado para imagem
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -15,20 +16,24 @@ const ProductForm = () => {
     setLoading(true);
     setMessage("");
 
-    const newProduct = {
-      name,
-      price: parseFloat(price),
-      quantity: parseInt(stock),
-      status,
-    };
+    // Usando FormData para enviar arquivo + dados
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("price", parseFloat(price));
+    formData.append("quantity", parseInt(stock));
+    formData.append("status", status);
+    if (img) {
+      formData.append("img", img);
+    }
 
     try {
-      await createProduct(newProduct); // Envia o produto ao backend
+      await createProduct(formData, true); // true indica multipart
       setMessage("Produto cadastrado com sucesso!");
       setName("");
       setPrice("");
       setStock("");
       setStatus("Ativo");
+      setImg(null);
     } catch (error) {
       setMessage(`Erro ao cadastrar produto: ${error.message}`);
     } finally {
@@ -83,6 +88,15 @@ const ProductForm = () => {
             <option value="Ativo">Ativo</option>
             <option value="Inativo">Inativo</option>
           </select>
+
+          <label htmlFor="img">Imagem do Produto:</label>
+          <input
+            type="file"
+            id="img"
+            name="img"
+            accept="image/*"
+            onChange={(e) => setImg(e.target.files[0])}
+          />
 
           <button type="submit" className="btn-primary" disabled={loading}>
             {loading ? "Salvando..." : "Salvar Produto"}

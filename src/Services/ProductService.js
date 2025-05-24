@@ -1,9 +1,14 @@
 import { fetchWithAuth } from "./Api";
 
-export const createProduct = (productData) => {
+// Novo createProduct que aceita FormData ou JSON
+export const createProduct = (productData, isMultipart = false) => {
   return fetchWithAuth("/products", {
     method: "POST",
-    body: JSON.stringify(productData),
+    body: isMultipart ? productData : JSON.stringify(productData),
+    ...(isMultipart
+      ? {} // Não define Content-Type, o navegador faz isso
+      : { headers: { "Content-Type": "application/json" } }
+    ),
   });
 };
 
