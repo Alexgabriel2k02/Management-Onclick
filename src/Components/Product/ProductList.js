@@ -16,6 +16,12 @@ const ProductList = ({ products, onDeleteProduct, onEditProduct, onToggleStatus 
             key={product.id}
             className={`product-item ${product.status === "Inativo" ? "inactive" : ""}`}
           >
+            <img
+            src={`http://localhost:5000/${product.img}`}
+            alt={`Imagem de ${product.name}`}
+            className="product-image"
+            style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+          />
             <span>
               {product.name} - R$ {Number(product.price).toFixed(2)} - Estoque: {product.stock} - Status: {product.status}
             </span>
