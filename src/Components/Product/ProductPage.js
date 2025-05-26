@@ -5,7 +5,8 @@ import {
   listProducts,
   createProduct,
   inactivateProduct,
-} from "../../Services/ProductService"; // Importa o serviço
+  toggleProductStatus, // Adicione esta função no seu ProductService.js
+} from "../../Services/ProductService";
 import "./ProductPage.css";
 
 const ProductPage = () => {
@@ -57,6 +58,20 @@ const ProductPage = () => {
     window.location.href = `/product/edit/${product.id}`;
   };
 
+  // Função para ativar/inativar produto
+  const handleToggleStatus = async (product) => {
+    try {
+      const updatedProduct = await toggleProductStatus(product.id);
+      setProducts((prevProducts) =>
+        prevProducts.map((p) =>
+          p.id === updatedProduct.id ? updatedProduct : p
+        )
+      );
+    } catch (err) {
+      alert(`Erro ao alterar status: ${err.message}`);
+    }
+  };
+
   if (loading) {
     return <p>Carregando produtos...</p>;
   }
@@ -72,6 +87,7 @@ const ProductPage = () => {
         products={products}
         onDeleteProduct={handleDeleteProduct}
         onEditProduct={handleEditProduct}
+        onToggleStatus={handleToggleStatus} // Passe a função aqui
       />
     </div>
   );

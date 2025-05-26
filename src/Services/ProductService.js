@@ -37,3 +37,9 @@ export const inactivateProduct = (productId) => {
   });
 };
 
+export const toggleProductStatus = (productId) => {
+  return fetchWithAuth(`/products/${productId}/toggle-status`, {
+    method: "PATCH",
+  });
+};
+

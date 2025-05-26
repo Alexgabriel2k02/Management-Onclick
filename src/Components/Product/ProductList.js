@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./ProductList.css";
 
-const ProductList = ({ products, onDeleteProduct, onEditProduct }) => {
+const ProductList = ({ products, onDeleteProduct, onEditProduct, onToggleStatus }) => {
   if (!products || products.length === 0) {
     return <p>Nenhum produto cadastrado.</p>;
   }
@@ -34,6 +34,15 @@ const ProductList = ({ products, onDeleteProduct, onEditProduct }) => {
               >
                 Excluir
               </button>
+              <button
+                className="btn-toggle-status"
+                onClick={() => onToggleStatus(product)}
+                aria-label={`${
+                  product.status === "Ativo" ? "Inativar" : "Ativar"
+                } produto ${product.name}`}
+              >
+                {product.status === "Ativo" ? "Inativar" : "Ativar"}
+              </button>
             </div>
           </li>
         ))}
@@ -55,6 +64,7 @@ ProductList.propTypes = {
   ).isRequired,
   onDeleteProduct: PropTypes.func.isRequired,
   onEditProduct: PropTypes.func.isRequired,
+  onToggleStatus: PropTypes.func.isRequired,
 };
 
 export default ProductList;
