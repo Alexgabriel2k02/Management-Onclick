@@ -1,26 +1,15 @@
 @import url("../Variables.css");
 
 
-/*espaçamento entre os elementos*/
-.produtos-page {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-    padding: 20px;
-  }
-
-/*estilo tabelas de forms e list*/
-.produto-item {
+/* espaçamento entre os elementos */
+.product-layout {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: hsl(var(--muted));
-  border-radius: var(--radius);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
 }
+
 
 
 
