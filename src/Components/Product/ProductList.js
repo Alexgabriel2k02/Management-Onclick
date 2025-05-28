@@ -17,14 +17,18 @@ const ProductList = ({ products, onDeleteProduct, onEditProduct }) => {
             className={`product-item ${product.status === "Inativo" ? "inactive" : ""}`}
           >
             <img
-            src={`http://localhost:5000/${product.img}`}
-            alt={`Imagem de ${product.name}`}
-            className="product-image"
-            style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-          />
-            <span>
-              {product.name} - R$ {Number(product.price).toFixed(2)} - Estoque: {product.quantity} - Status: {product.status}
-            </span>
+              src={`http://localhost:5000/${product.img}`}
+              alt={`Imagem de ${product.name}`}
+              className="product-image"
+            />
+            <div className="product-info">
+              <div className="product-name">{product.name}</div>
+              <div className="product-details">
+                <span className="product-price">Preço: <b>R$ {Number(product.price).toFixed(2)}</b></span>
+                <span className="product-quantity"> | Estoque: <b>{product.quantity}</b></span>
+                <span className="product-status"> | Status: <b>{product.status}</b></span>
+              </div>
+            </div>
             <div className="product-actions">
               <button
                 className="btn-edit"
