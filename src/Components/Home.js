@@ -14,6 +14,7 @@ const Home = () => {
         <a href="/product" className="btn-group">Gerenciar Produtos</a>
         <a href="/seller" className="btn-group">Gerenciar Vendedores</a>
         <a href="/order" className="btn-group">Gerenciar Pedidos</a>
+        <a href="/sale" className="btn-group">Gerenciar Vendas</a> 
       </div>
 
       <footer>
