@@ -6,8 +6,7 @@ const ProductForm = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
-  const [status, setStatus] = useState("Ativo");
-  const [img, setImg] = useState(null); // Novo estado para imagem
+  const [img, setImg] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -16,23 +15,20 @@ const ProductForm = () => {
     setLoading(true);
     setMessage("");
 
-    // Usando FormData para enviar arquivo + dados
     const formData = new FormData();
     formData.append("name", name);
     formData.append("price", parseFloat(price));
     formData.append("quantity", parseInt(stock));
-    formData.append("status", status);
     if (img) {
       formData.append("img", img);
     }
 
     try {
-      await createProduct(formData, true); // true indica multipart
+      await createProduct(formData, true);
       setMessage("Produto cadastrado com sucesso!");
       setName("");
       setPrice("");
       setStock("");
-      setStatus("Ativo");
       setImg(null);
     } catch (error) {
       setMessage(`Erro ao cadastrar produto: ${error.message}`);
@@ -77,17 +73,6 @@ const ProductForm = () => {
             onChange={(e) => setStock(e.target.value)}
             required
           />
-
-          <label htmlFor="status">Status:</label>
-          <select
-            id="status"
-            name="status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
-            <option value="Ativo">Ativo</option>
-            <option value="Inativo">Inativo</option>
-          </select>
 
           <label htmlFor="img">Imagem do Produto:</label>
           <input
