@@ -42,9 +42,8 @@ const SalePage = () => {
 
     // Dados da venda
     const newSale = {
-      productId: product.id,
+      product_id: product.id,
       quantity: parseInt(quantity),
-      price: product.price,
     };
 
     try {
