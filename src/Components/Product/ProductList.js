@@ -23,7 +23,7 @@ const ProductList = ({ products, onDeleteProduct, onEditProduct }) => {
             style={{ width: '100px', height: '100px', objectFit: 'cover' }}
           />
             <span>
-              {product.name} - R$ {Number(product.price).toFixed(2)} - Estoque: {product.stock} - Status: {product.status}
+              {product.name} - R$ {Number(product.price).toFixed(2)} - Estoque: {product.quantity} - Status: {product.status}
             </span>
             <div className="product-actions">
               <button
