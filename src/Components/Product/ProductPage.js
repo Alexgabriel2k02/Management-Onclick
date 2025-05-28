@@ -4,8 +4,7 @@ import ProductForm from "./ProductForm";
 import {
   listProducts,
   createProduct,
-  deleteProduct, // 
-  toggleProductStatus,
+  deleteProduct, 
 } from "../../Services/ProductService";
 import "./ProductPage.css";
 import { useNavigate } from "react-router-dom"; // Adicione esta linha
@@ -59,20 +58,6 @@ const ProductPage = () => {
     navigate(`/editar-produto/${product.id}`); // Use navigate aqui
   };
 
-  // Função para ativar/inativar produto
-  const handleToggleStatus = async (product) => {
-    try {
-      const updatedProduct = await toggleProductStatus(product.id);
-      setProducts((prevProducts) =>
-        prevProducts.map((p) =>
-          p.id === updatedProduct.id ? updatedProduct : p
-        )
-      );
-    } catch (err) {
-      alert(`Erro ao alterar status: ${err.message}`);
-    }
-  };
-
   if (loading) {
     return <p>Carregando produtos...</p>;
   }
@@ -83,13 +68,14 @@ const ProductPage = () => {
 
   return (
     <div className="product-page">
-      <ProductForm onAddProduct={handleAddProduct} />
-      <ProductList
-        products={products}
-        onDeleteProduct={handleDeleteProduct}
-        onEditProduct={handleEditProduct}
-        onToggleStatus={handleToggleStatus} // Passe a função aqui
-      />
+      <div className="product-layout">
+        <ProductForm onAddProduct={handleAddProduct} />
+        <ProductList
+          products={products}
+          onDeleteProduct={handleDeleteProduct}
+          onEditProduct={handleEditProduct}
+        />
+      </div>
     </div>
   );
 };
