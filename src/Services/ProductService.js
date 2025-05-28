@@ -28,6 +28,7 @@ export const updateProduct = (productId, productData) => {
   return fetchWithAuth(`/products/${productId}`, {
     method: "PUT",
     body: JSON.stringify(productData),
+    headers: { "Content-Type": "application/json" },
   });
 };
 
@@ -40,6 +41,12 @@ export const inactivateProduct = (productId) => {
 export const toggleProductStatus = (productId) => {
   return fetchWithAuth(`/products/${productId}/toggle-status`, {
     method: "PATCH",
+  });
+};
+
+export const deleteProduct = (productId) => {
+  return fetchWithAuth(`/products/${productId}`, {
+    method: "DELETE",
   });
 };
 
