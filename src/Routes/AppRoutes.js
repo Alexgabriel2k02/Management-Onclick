@@ -9,6 +9,7 @@ import OrderPage from "../Components/Order/OrderPage";
 import SalePage from "../Components/Sale/SalePage";
 import SellerActivationPage from "../Components/Auth/SellerActivationPage";
 import ProductEditForm from "../Components/Product/ProductEditForm";
+import SellerHome from "../Components/Auth/SellerHome";
 
 const AppRoutes = () => {
   const isAuthenticated = !!localStorage.getItem("token"); // Verifica se o usuário está autenticado
@@ -33,6 +34,7 @@ const AppRoutes = () => {
       <Route path="/order" element={isAuthenticated ? <OrderPage /> : <Navigate to="/login" />} />
       <Route path="/sale" element={isAuthenticated ? <SalePage /> : <Navigate to="/login" />} />
       <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
+      <Route path="/inicio-vendedor" element={<SellerHome />} />
     </Routes>
   );
 };
