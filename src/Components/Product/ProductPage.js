@@ -4,15 +4,17 @@ import ProductForm from "./ProductForm";
 import {
   listProducts,
   createProduct,
-  inactivateProduct,
-  toggleProductStatus, // Adicione esta função no seu ProductService.js
+  deleteProduct, // 
+  toggleProductStatus,
 } from "../../Services/ProductService";
 import "./ProductPage.css";
+import { useNavigate } from "react-router-dom"; // Adicione esta linha
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Adicione esta linha
 
   // Buscar produtos ao carregar a página
   useEffect(() => {
@@ -43,7 +45,7 @@ const ProductPage = () => {
   // Excluir produto
   const handleDeleteProduct = async (id) => {
     try {
-      await inactivateProduct(id); // Usa o ProductService
+      await deleteProduct(id); // Usa o ProductService
       setProducts((prevProducts) =>
         prevProducts.filter((product) => product.id !== id)
       );
@@ -54,8 +56,7 @@ const ProductPage = () => {
 
   // Editar produto
   const handleEditProduct = (product) => {
-    // Redireciona para a página de edição com o id do produto
-    window.location.href = `/product/edit/${product.id}`;
+    navigate(`/editar-produto/${product.id}`); // Use navigate aqui
   };
 
   // Função para ativar/inativar produto
