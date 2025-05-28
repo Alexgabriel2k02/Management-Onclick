@@ -4,7 +4,8 @@ import ProductForm from "./ProductForm";
 import {
   listProducts,
   createProduct,
-  deleteProduct, 
+  deleteProduct,
+  updateProduct, // Importe a função updateProduct
 } from "../../Services/ProductService";
 import "./ProductPage.css";
 import { useNavigate } from "react-router-dom"; // Adicione esta linha
@@ -58,6 +59,21 @@ const ProductPage = () => {
     navigate(`/editar-produto/${product.id}`); // Use navigate aqui
   };
 
+  // Inativar produto (apenas muda o status)
+  const handleToggleStatus = async (product) => {
+    try {
+      const newStatus = product.status === "Ativo" ? "Inativo" : "Ativo";
+      await updateProduct(product.id, { status: newStatus });
+      setProducts((prevProducts) =>
+        prevProducts.map((p) =>
+          p.id === product.id ? { ...p, status: newStatus } : p
+        )
+      );
+    } catch (err) {
+      alert(`Erro ao alterar status: ${err.message}`);
+    }
+  };
+
   if (loading) {
     return <p>Carregando produtos...</p>;
   }
@@ -74,6 +90,7 @@ const ProductPage = () => {
           products={products}
           onDeleteProduct={handleDeleteProduct}
           onEditProduct={handleEditProduct}
+          onToggleStatus={handleToggleStatus} 
         />
       </div>
     </div>
