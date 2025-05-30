@@ -1,57 +1,39 @@
-.clientes-list {
-  flex: 2;
-  background: hsl(var(--secondary) / 0.2); /* Fundo semitransparente */
+.form-card {
+  flex: 1;
+  min-width: 320px;
+  max-width: 420px;
+  background: hsla(var(--background), 0.35);
   border-radius: var(--radius);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px); /* Efeito de desfoque */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Borda suave */
-  padding: 2rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid hsla(var(--background), 0.18);
+  margin: 0 auto;
 }
 
-.clientes-list ul {
+.seller-list-ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  max-height: 420px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary)) hsl(var(--background));
 }
 
-.clientes-list li {
+.seller-item {
+  background: hsla(var(--background) / 0.5);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: hsl(var(--muted));
-  border-radius: var(--radius);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
 }
 
-.clientes-list li span {
-  font-size: 1rem;
-  font-weight: 500;
-  color: hsl(var(--foreground));
+.seller-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-.clientes-list li button {
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border-radius: var(--radius);
-  border: none;
-  cursor: pointer;
-  background-color: hsl(var(--danger));
-  color: hsl(var(--primary-foreground));
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.clientes-list li button:hover {
-  background-color: hsla(var(--danger) / 0.8);
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.btn-delete:hover {
-  background-color: hsla(var(--danger) / 0.8);
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}

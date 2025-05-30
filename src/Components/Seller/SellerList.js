@@ -8,9 +8,9 @@ const SellerList = ({ sellers, onDeleteSeller }) => {
   }
 
   return (
-    <div className="seller-list">
+    <div className="form-card">
       <h2>Lista de Vendedores</h2>
-      <ul>
+      <ul className="seller-list-ul">
         {sellers.map((seller) => (
           <li key={seller.id} className="seller-item">
             <span>
@@ -29,7 +29,6 @@ const SellerList = ({ sellers, onDeleteSeller }) => {
   );
 };
 
-// Validação das props
 SellerList.propTypes = {
   sellers: PropTypes.arrayOf(
     PropTypes.shape({
