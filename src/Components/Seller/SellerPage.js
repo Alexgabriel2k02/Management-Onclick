@@ -55,7 +55,7 @@ const SellerPage = () => {
   }
 
   return (
-    <div className="seller-page">
+    <div className="sellers-page">
       <SellerForm onAddSeller={handleAddSeller} />
       <SellerList sellers={sellers} onDeleteSeller={handleDeleteSeller} />
     </div>
