@@ -20,7 +20,7 @@ const SellerForm = ({ onAddSeller }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="form-card" onSubmit={handleSubmit}>
       <h2>Cadastrar Novo Vendedor</h2>
       <label>Nome:</label>
       <input
