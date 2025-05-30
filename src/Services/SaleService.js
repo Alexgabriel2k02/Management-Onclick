@@ -6,3 +6,10 @@ export const createSale = (saleData) => {
     body: JSON.stringify(saleData),
   });
 };
+
+// Função para listar vendas
+export const listSales = () => {
+  return fetchWithAuth("/sales", {
+    method: "GET",
+  });
+};
