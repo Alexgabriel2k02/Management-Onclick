@@ -7,10 +7,20 @@ h2 {
   text-align: center;
 }
 
+
+.produtos-list {
+  max-height: 500px;      /* Defina a altura máxima desejada */
+  overflow-y: auto;       /* Habilita o scroll vertical */
+  padding-right: 8px;     /* Espaço para a barra de rolagem */
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--secondary)) hsl(var(--background));
+}
+
 .produtos-list ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  max-height: 500px;     
 }
 
 .produto-item span {
@@ -118,6 +128,18 @@ h2 {
   opacity: 0.6;
   text-decoration: line-through;
   color: hsl(var(--danger));
+}
+
+/* Scrollbar para navegadores Webkit (Chrome, Edge, Safari) */
+.produtos-list::-webkit-scrollbar {
+  width: 8px;
+}
+.produtos-list::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 8px;
+}
+.produtos-list::-webkit-scrollbar-track {
+  background: hsl(var(--background));
 }
 
 /* Responsividade */

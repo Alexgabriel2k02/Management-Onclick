@@ -10,44 +10,46 @@ const ProductList = ({ products, onDeleteProduct, onEditProduct }) => {
   return (
     <div className="container">
       <h2>Lista de Produtos</h2>
-      <ul>
-        {products.map((product) => (
-          <li
-            key={product.id}
-            className={`product-item ${product.status === "Inativo" ? "inactive" : ""}`}
-          >
-            <img
-              src={`http://localhost:5000/${product.img}`}
-              alt={`Imagem de ${product.name}`}
-              className="product-image"
-            />
-            <div className="product-info">
-              <div className="product-name">{product.name}</div>
-              <div className="product-details">
-                <span className="product-price">Preço: <b>R$ {Number(product.price).toFixed(2)}</b></span>
-                <span className="product-quantity"> | Estoque: <b>{product.quantity}</b></span>
-                <span className="product-status"> | Status: <b>{product.status}</b></span>
+      <div className="produtos-list">
+        <ul>
+          {products.map((product) => (
+            <li
+              key={product.id}
+              className={`product-item ${product.status === "Inativo" ? "inactive" : ""}`}
+            >
+              <img
+                src={`http://localhost:5000/${product.img}`}
+                alt={`Imagem de ${product.name}`}
+                className="product-image"
+              />
+              <div className="product-info">
+                <div className="product-name">{product.name}</div>
+                <div className="product-details">
+                  <span className="product-price">Preço: <b>R$ {Number(product.price).toFixed(2)}</b></span>
+                  <span className="product-quantity"> | Estoque: <b>{product.quantity}</b></span>
+                  <span className="product-status"> | Status: <b>{product.status}</b></span>
+                </div>
               </div>
-            </div>
-            <div className="product-actions">
-              <button
-                className="btn-edit"
-                onClick={() => onEditProduct(product)}
-                aria-label={`Editar produto ${product.name}`}
-              >
-                Editar
-              </button>
-              <button
-                className="btn-delete"
-                onClick={() => onDeleteProduct(product.id)}
-                aria-label={`Excluir produto ${product.name}`}
-              >
-                Excluir
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+              <div className="product-actions">
+                <button
+                  className="btn-edit"
+                  onClick={() => onEditProduct(product)}
+                  aria-label={`Editar produto ${product.name}`}
+                >
+                  Editar
+                </button>
+                <button
+                  className="btn-delete"
+                  onClick={() => onDeleteProduct(product.id)}
+                  aria-label={`Excluir produto ${product.name}`}
+                >
+                  Excluir
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
