@@ -9,7 +9,7 @@ import OrderPage from "../Components/Order/OrderPage";
 import SalePage from "../Components/Sale/SalePage";
 import SellerActivationPage from "../Components/Auth/SellerActivationPage";
 import ProductEditForm from "../Components/Product/ProductEditForm";
-import SellerHome from "../Components/Auth/SellerHome";
+import SellerHome from "../Components/Auth/Homepage";
 
 const AppRoutes = () => {
   const isAuthenticated = !!localStorage.getItem("token"); // Verifica se o usuário está autenticado
