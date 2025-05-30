@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { listProducts } from "../../Services/ProductService";
-import { createSale, listSales } from "../../Services/SaleService"; // Importe listSales
+import { createSale, listSales } from "../../Services/SaleService";
 import "./SalePage.css";
 
 const SalePage = () => {
@@ -30,7 +30,7 @@ const SalePage = () => {
   useEffect(() => {
     const fetchSalesHistory = async () => {
       try {
-        const sales = await listSales(); // Chama o backend
+        const sales = await listSales();
         setSalesHistory(sales);
       } catch (error) {
         console.error("Erro ao buscar histórico de vendas:", error);
@@ -76,45 +76,74 @@ const SalePage = () => {
 
   return (
     <div className="sale-page">
-      <h2>Realizar Venda</h2>
       {message && <p className="message">{message}</p>}
-      <form onSubmit={handleSale}>
-        <label>Produto:</label>
-        <select
-          value={selectedProduct}
-          onChange={(e) => setSelectedProduct(e.target.value)}
-          required
-        >
-          <option value="">Selecione um produto</option>
-          {products.map((product) => (
-            <option key={product.id} value={product.id}>
-              {product.name} - R$ {product.price.toFixed(2)} (Estoque: {product.stock})
-            </option>
-          ))}
-        </select>
+      <div className="sale-content">
+        <div className="form-card">
+          <h2>Realizar Venda</h2>
+          <form onSubmit={handleSale}>
+            <label>Produto:</label>
+            <select
+              value={selectedProduct}
+              onChange={(e) => setSelectedProduct(e.target.value)}
+              required
+            >
+              <option value="">Selecione um produto</option>
+              {products.map((product) => (
+                <option key={product.id} value={product.id}>
+                  {product.name} - R$ {product.price.toFixed(2)} (Estoque: {product.stock})
+                </option>
+              ))}
+            </select>
 
-        <label>Quantidade:</label>
-        <input
-          type="number"
-          value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
-          min="1"
-          required
-        />
+            <label>Quantidade:</label>
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              min="1"
+              required
+            />
 
-        <button type="submit">Registrar Venda</button>
-      </form>
+            <button type="submit">Registrar Venda</button>
+          </form>
+        </div>
 
-      {/* Histórico de vendas */}
-      <h3>Histórico de Vendas</h3>
-      <ul>
-        {salesHistory.length === 0 && <li>Nenhuma venda registrada.</li>}
-        {salesHistory.map((sale, idx) => (
-          <li key={idx}>
-            {sale.date || sale.created_at} - Produto ID: {sale.product_id} - Quantidade: {sale.quantity}
-          </li>
-        ))}
-      </ul>
+        <div className="form-card">
+          <h2>Histórico de Vendas</h2>
+          <ul className="sales-history-list">
+            {salesHistory.length === 0 && <li>Nenhuma venda registrada.</li>}
+            {salesHistory.map((sale, idx) => {
+              const product = products.find((p) => p.id === sale.product_id);
+              const productName = product ? product.name : `ID: ${sale.product_id}`;
+              const totalPrice = product ? (product.price * sale.quantity).toFixed(2) : "-";
+              return (
+                <li key={idx} className="sales-history-item">
+                  <div className="sale-product-name">{productName}</div>
+                  <div className="sale-details">
+                    <span className="sale-date">
+                      {new Date(sale.date || sale.created_at).toLocaleString()}
+                    </span>
+                    <span className="sale-seller">
+                      Vendedor: <b>{sale.seller_id}</b>
+                    </span>
+                    <span className="sale-product-id">
+                      ID Produto: <b>{sale.product_id}</b>
+                    </span>
+                  </div>
+                  <div className="sale-info">
+                    <span className="sale-quantity">
+                      Qtd: <b>{sale.quantity}</b>
+                    </span>
+                    <span className="sale-total">
+                      Total: <b>R$ {totalPrice}</b>
+                    </span>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 };
