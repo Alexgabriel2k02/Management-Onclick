@@ -54,6 +54,15 @@ input {
   background: hsla(var(--background) / 0.5);
 }
 
+
+.form-card form select,
+.form-card form input {
+  max-width: 320px;
+  width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+
 select:focus,
 input:focus {
   border-color: hsl(var(--primary));
