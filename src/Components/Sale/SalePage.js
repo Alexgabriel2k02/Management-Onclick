@@ -9,14 +9,15 @@ const SalePage = () => {
   const [quantity, setQuantity] = useState("");
   const [message, setMessage] = useState({ text: "", type: "" });
   const [salesHistory, setSalesHistory] = useState([]);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const sellerId = user?.id;
 
   // Buscar produtos disponíveis para venda
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const data = await listProducts();
-        const activeProducts = data.filter((product) => product.status === "Ativo");
-        setProducts(activeProducts);
+        setProducts(data.filter(product => product.quantity > 0));
       } catch (error) {
         console.error("Erro ao buscar produtos:", error);
         setMessage({ text: "Erro ao carregar produtos.", type: "error" });
@@ -49,7 +50,7 @@ const SalePage = () => {
       return;
     }
 
-    if (product.stock < quantity) {
+    if (product.quantity < Number(quantity)) {
       setMessage({ text: "Quantidade solicitada excede o estoque disponível.", type: "error" });
       return;
     }
@@ -57,6 +58,7 @@ const SalePage = () => {
     const newSale = {
       product_id: product.id,
       quantity: parseInt(quantity),
+      seller_id: sellerId, 
     };
 
     try {
@@ -92,7 +94,7 @@ const SalePage = () => {
               <option value="">Selecione um produto</option>
               {products.map((product) => (
                 <option key={product.id} value={product.id}>
-                  {product.name} - R$ {product.price.toFixed(2)} (Estoque: {product.stock})
+                  {product.name} - R$ {product.price.toFixed(2)} (Estoque: {product.quantity})
                 </option>
               ))}
             </select>
@@ -114,35 +116,37 @@ const SalePage = () => {
           <h2>Histórico de Vendas</h2>
           <ul className="sales-history-list">
             {salesHistory.length === 0 && <li>Nenhuma venda registrada.</li>}
-            {salesHistory.map((sale, idx) => {
-              const product = products.find((p) => p.id === sale.product_id);
-              const productName = product ? product.name : `ID: ${sale.product_id}`;
-              const totalPrice = product ? (product.price * sale.quantity).toFixed(2) : "-";
-              return (
-                <li key={idx} className="sales-history-item">
-                  <div className="sale-product-name">{productName}</div>
-                  <div className="sale-details">
-                    <span className="sale-date">
-                      {new Date(sale.date || sale.created_at).toLocaleString()}
-                    </span>
-                    <span className="sale-seller">
-                      Vendedor: <b>{sale.seller_id}</b>
-                    </span>
-                    <span className="sale-product-id">
-                      ID Produto: <b>{sale.product_id}</b>
-                    </span>
-                  </div>
-                  <div className="sale-info">
-                    <span className="sale-quantity">
-                      Qtd: <b>{sale.quantity}</b>
-                    </span>
-                    <span className="sale-total">
-                      Total: <b>R$ {totalPrice}</b>
-                    </span>
-                  </div>
-                </li>
-              );
-            })}
+            {salesHistory
+            .filter(sale => sale.seller_id === sellerId) // Mostra só vendas do seller logado
+              .map((sale, idx) => {
+                const product = products.find((p) => p.id === sale.product_id);
+                const productName = product ? product.name : `ID: ${sale.product_id}`;
+                const totalPrice = product ? (product.price * sale.quantity).toFixed(2) : "-";
+                return (
+                  <li key={idx} className="sales-history-item">
+                    <div className="sale-product-name">{productName}</div>
+                    <div className="sale-details">
+                      <span className="sale-date">
+                        {new Date(sale.date || sale.created_at).toLocaleString()}
+                      </span>
+                      <span className="sale-seller">
+                        Vendedor: <b>{sale.seller_id}</b>
+                      </span>
+                      <span className="sale-product-id">
+                        ID Produto: <b>{sale.product_id}</b>
+                      </span>
+                    </div>
+                    <div className="sale-info">
+                      <span className="sale-quantity">
+                        Qtd: <b>{sale.quantity}</b>
+                      </span>
+                      <span className="sale-total">
+                        Total: <b>R$ {totalPrice}</b>
+                      </span>
+                    </div>
+                  </li>
+                );
+              })}
           </ul>
         </div>
       </div>
