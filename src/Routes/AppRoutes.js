@@ -17,7 +17,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* Sempre começa pelo cadastro */}
-      <Route path="/" element={<Navigate to="/cadastro" />} />
+      <Route path="/" element={<Navigate to="/inicio-vendedor" />} />
 
       {/* Cadastro */}
       <Route path="/cadastro" element={<CadastroUsuario />} />
