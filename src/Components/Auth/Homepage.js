@@ -14,6 +14,7 @@ const SellerHome = () => {
         <a href="/cadastro" className="btn-group">Cadastrar Vendedor</a>
         <a href="/ativar-vendedor" className="btn-group">Ativar Número</a>
         <a href="/login" className="btn-group">Login</a>
+        <a href="http://localhost:8501" className="btn-group" target="_blank" rel="noopener noreferrer">Relatórios</a>
       </div>
 
       <footer>
