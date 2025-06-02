@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./OrderList.css";
 
-const OrderList = ({ pedidos }) => {
+const OrderList = ({ pedidos, message }) => {
   if (!pedidos || pedidos.length === 0) {
     return <p>Nenhum pedido encontrado.</p>;
   }
@@ -10,6 +10,9 @@ const OrderList = ({ pedidos }) => {
   return (
     <div>
       <h2>Lista de Pedidos</h2>
+      {message && message.text && (
+        <p className={`message ${message.type}`}>{message.text}</p>
+      )}
       <ul>
         {pedidos.map((pedido) => (
           <li key={pedido.id} className="order-item">
@@ -32,6 +35,10 @@ OrderList.propTypes = {
       quantity: PropTypes.number.isRequired,
     })
   ),
+  message: PropTypes.shape({
+    text: PropTypes.string,
+    type: PropTypes.string,
+  }),
 };
 
 export default OrderList;

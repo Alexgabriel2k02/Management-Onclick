@@ -7,19 +7,17 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ text: "", type: "" });
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
+    setMessage({ text: "", type: "" });
 
     try {
       // Faz a chamada ao backend para autenticação
       const response = await login(email, senha);
-
-      console.log("Resposta do login:", response); // Log para depuração
 
       // Ajuste para garantir que token e user existam na resposta
       const token = response.token || response.data?.token;
@@ -29,11 +27,11 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("registered", "true"); // Marca como registrado
 
-      setMessage("Login realizado com sucesso!");
+      setMessage({ text: "Login realizado com sucesso!", type: "success" });
       navigate("/home"); // Redireciona para a tela de gerenciamento após login
     } catch (error) {
       console.error("Erro ao fazer login:", error);
-      setMessage("Email ou senha incorretos!");
+      setMessage({ text: "Email ou senha incorretos!", type: "error" });
     } finally {
       setLoading(false);
     }
@@ -42,7 +40,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <h2>Login</h2>
-      {message && <p className="message">{message}</p>}
+      {message.text && <p className={`message ${message.type}`}>{message.text}</p>}
       <form onSubmit={handleLogin}>
         <label>Email:</label>
         <input

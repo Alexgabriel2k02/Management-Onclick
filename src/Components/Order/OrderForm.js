@@ -7,23 +7,23 @@ const OrderForm = () => {
   const [product, setProduct] = useState("");
   const [quantity, setQuantity] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ text: "", type: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
+    setMessage({ text: "", type: "" });
 
     const newOrder = { seller, product, quantity: parseInt(quantity) };
 
     try {
       await createOrder(newOrder); // Envia o pedido ao backend
-      setMessage("Pedido cadastrado com sucesso!");
+      setMessage({ text: "Pedido cadastrado com sucesso!", type: "success" });
       setSeller("");
       setProduct("");
       setQuantity("");
     } catch (error) {
-      setMessage(`Erro ao cadastrar pedido: ${error.message}`);
+      setMessage({ text: `Erro ao cadastrar pedido: ${error.message}`, type: "error" });
     } finally {
       setLoading(false);
     }
@@ -32,7 +32,7 @@ const OrderForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Cadastrar Novo Pedido</h2>
-      {message && <p className="message">{message}</p>}
+      {message.text && <p className={`message ${message.type}`}>{message.text}</p>}
       <label>Vendedor:</label>
       <input
         type="text"

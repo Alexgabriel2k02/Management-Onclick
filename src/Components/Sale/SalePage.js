@@ -7,7 +7,7 @@ const SalePage = () => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ text: "", type: "" });
   const [salesHistory, setSalesHistory] = useState([]);
 
   // Buscar produtos disponíveis para venda
@@ -19,7 +19,7 @@ const SalePage = () => {
         setProducts(activeProducts);
       } catch (error) {
         console.error("Erro ao buscar produtos:", error);
-        setMessage("Erro ao carregar produtos.");
+        setMessage({ text: "Erro ao carregar produtos.", type: "error" });
       }
     };
 
@@ -45,12 +45,12 @@ const SalePage = () => {
 
     const product = products.find((p) => p.id === parseInt(selectedProduct));
     if (!product) {
-      setMessage("Produto inválido.");
+      setMessage({ text: "Produto inválido.", type: "error" });
       return;
     }
 
     if (product.stock < quantity) {
-      setMessage("Quantidade solicitada excede o estoque disponível.");
+      setMessage({ text: "Quantidade solicitada excede o estoque disponível.", type: "error" });
       return;
     }
 
@@ -61,7 +61,7 @@ const SalePage = () => {
 
     try {
       await createSale(newSale);
-      setMessage("Venda registrada com sucesso!");
+      setMessage({ text: "Venda registrada com sucesso!", type: "success" });
       setQuantity("");
       setSelectedProduct("");
 
@@ -70,13 +70,15 @@ const SalePage = () => {
       setSalesHistory(sales);
     } catch (error) {
       console.error("Erro ao registrar venda:", error);
-      setMessage("Erro ao registrar venda.");
+      setMessage({ text: "Erro ao registrar venda.", type: "error" });
     }
   };
 
   return (
     <div className="sale-page">
-      {message && <p className="message">{message}</p>}
+      {message.text && (
+        <p className={`message ${message.type}`}>{message.text}</p>
+      )}
       <div className="sale-content">
         <div className="form-card">
           <h2>Realizar Venda</h2>

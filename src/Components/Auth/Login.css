@@ -97,6 +97,24 @@ h2 {
   margin-bottom: 10px; /* Reduz o espaço abaixo do título */
 } /* Adicionada a chave de fechamento */
 
+.message {
+  text-align: center;
+  font-weight: 600;
+  padding: 8px;
+  margin-bottom: 16px;
+  border-radius: var(--radius);
+}
+
+.message.success {
+  background: hsla(120, 70%, 50%, 0.1);
+  color: hsl(120, 70%, 35%);
+}
+
+.message.error {
+  background: hsla(0, 70%, 50%, 0.1);
+  color: hsl(0, 70%, 45%);
+}
+
 @media (max-width: 1024px) {
   .input-group {
     flex: 1 1 calc(100% - 20px); /* Em telas médias, os campos ocupam 100% da largura */

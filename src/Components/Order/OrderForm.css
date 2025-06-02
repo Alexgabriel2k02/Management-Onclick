@@ -54,6 +54,24 @@ button:hover {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
+.message {
+  text-align: center;
+  font-weight: 600;
+  padding: 8px;
+  margin-bottom: 16px;
+  border-radius: var(--radius);
+}
+
+.message.success {
+  background: hsla(120, 70%, 50%, 0.1);
+  color: hsl(120, 70%, 35%);
+}
+
+.message.error {
+  background: hsla(0, 70%, 50%, 0.1);
+  color: hsl(0, 70%, 45%);
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   form {

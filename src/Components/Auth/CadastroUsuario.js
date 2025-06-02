@@ -10,13 +10,13 @@ const CadastroUsuario = () => {
   const [cnpj, setCnpj] = useState("");
   const [telefone, setTelefone] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ text: "", type: "" });
   const navigate = useNavigate();
 
   const handleCadastro = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
+    setMessage({ text: "", type: "" });
 
     try {
       // Faz a chamada ao backend para cadastrar o usuário
@@ -34,11 +34,11 @@ const CadastroUsuario = () => {
       localStorage.setItem("token", response.token); // Armazena o token JWT, se retornado
       localStorage.setItem("registered", "true"); // Marca como registrado
 
-      setMessage("Cadastro realizado com sucesso!");
+      setMessage({ text: "Cadastro realizado com sucesso!", type: "success" });
       setTimeout(() => navigate("/ativar-vendedor"), 2000); // Redireciona para ativação após 2 segundos
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
-      setMessage("Erro ao cadastrar. Tente novamente.");
+      setMessage({ text: "Erro ao cadastrar. Tente novamente.", type: "error" });
     } finally {
       setLoading(false);
     }
@@ -47,7 +47,7 @@ const CadastroUsuario = () => {
   return (
     <div className="cadastro-container">
       <h2>Cadastro</h2>
-      {message && <p className="message">{message}</p>}
+      {message.text && <p className={`message ${message.type}`}>{message.text}</p>}
       <form onSubmit={handleCadastro}>
         <label>Nome:</label>
         <input

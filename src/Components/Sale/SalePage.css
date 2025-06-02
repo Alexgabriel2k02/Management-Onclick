@@ -87,7 +87,12 @@ button:hover {
   color: hsl(120, 70%, 35%);
 }
 
-.message.erro {
+.message.success {
+  background: hsla(120, 70%, 50%, 0.1);
+  color: hsl(120, 70%, 35%);
+}
+
+.message.error {
   background: hsla(0, 70%, 50%, 0.1);
   color: hsl(0, 70%, 45%);
 }
