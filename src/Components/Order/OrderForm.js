@@ -1,27 +1,44 @@
-import React, { useState } from "react";
-import { createOrder } from "../../Services/OrderService"; // Importa o serviço
+import React, { useState, useEffect } from "react";
+import { createOrder } from "../../Services/OrderService";
+import { listClients } from "../../Services/ClientService";
+import { listProducts } from "../../Services/ProductService";
 import "./OrderForm.css";
 
 const OrderForm = () => {
-  const [seller, setSeller] = useState("");
-  const [product, setProduct] = useState("");
+  const [product_id, setProductId] = useState("");
+  const [products, setProducts] = useState([]);
   const [quantity, setQuantity] = useState("");
+  const [client_id, setClientId] = useState("");
+  const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
+
+  useEffect(() => {
+    listClients()
+      .then(setClients)
+      .catch(() => setClients([]));
+    listProducts()
+      .then(setProducts)
+      .catch(() => setProducts([]));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage({ text: "", type: "" });
 
-    const newOrder = { seller, product, quantity: parseInt(quantity) };
+    const newOrder = {
+      client_id,
+      product_id,
+      quantity: parseInt(quantity),
+    };
 
     try {
-      await createOrder(newOrder); // Envia o pedido ao backend
+      await createOrder(newOrder);
       setMessage({ text: "Pedido cadastrado com sucesso!", type: "success" });
-      setSeller("");
-      setProduct("");
+      setProductId("");
       setQuantity("");
+      setClientId("");
     } catch (error) {
       setMessage({ text: `Erro ao cadastrar pedido: ${error.message}`, type: "error" });
     } finally {
@@ -33,20 +50,32 @@ const OrderForm = () => {
     <form onSubmit={handleSubmit}>
       <h2>Cadastrar Novo Pedido</h2>
       {message.text && <p className={`message ${message.type}`}>{message.text}</p>}
-      <label>Vendedor:</label>
-      <input
-        type="text"
-        value={seller}
-        onChange={(e) => setSeller(e.target.value)}
+      <label>Cliente:</label>
+      <select
+        value={client_id}
+        onChange={(e) => setClientId(e.target.value)}
         required
-      />
+      >
+        <option value="">Selecione um cliente</option>
+        {clients.map((client) => (
+          <option key={client.id} value={client.id}>
+            {client.name} ({client.email})
+          </option>
+        ))}
+      </select>
       <label>Produto:</label>
-      <input
-        type="text"
-        value={product}
-        onChange={(e) => setProduct(e.target.value)}
+      <select
+        value={product_id}
+        onChange={(e) => setProductId(e.target.value)}
         required
-      />
+      >
+        <option value="">Selecione um produto</option>
+        {products.map((product) => (
+          <option key={product.id} value={product.id}>
+            {product.name}
+          </option>
+        ))}
+      </select>
       <label>Quantidade:</label>
       <input
         type="number"
