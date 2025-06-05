@@ -6,3 +6,11 @@ export const activateSeller = (sellerId) => {
     body: JSON.stringify({ sellerId }),
   });
 };
+
+export const listSellers = async () => {
+  const response = await fetchWithAuth("/sellers", {
+    method: "GET",
+  });
+  if (!response.ok) throw new Error("Erro ao buscar vendedores");
+  return response.json();
+};
