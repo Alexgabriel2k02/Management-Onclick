@@ -14,7 +14,8 @@ const Home = () => {
         <a href="/product" className="btn-group">Gerenciar Produtos</a>
         <a href="/seller" className="btn-group">Gerenciar Vendedores</a>
         <a href="/order" className="btn-group">Gerenciar Pedidos</a>
-        <a href="/sale" className="btn-group">Gerenciar Vendas</a> 
+        <a href="/sale" className="btn-group">Gerenciar Vendas</a>
+        <a href="/client" className="btn-group">Gerenciar Clientes</a> {/* Novo botão */}
       </div>
 
       <footer>
