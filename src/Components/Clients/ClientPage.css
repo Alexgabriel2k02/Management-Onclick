@@ -1,0 +1,45 @@
+@import url("../Variables.css");
+
+/* Layout igual ao ProductPage */
+.client-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Card centralizado e translúcido para o formulário */
+.client-form-card {
+  background: hsla(0,0%,100%,0.7);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+  padding: 32px 24px;
+  max-width: 500px;
+  margin: 32px auto;
+  width: 100%;
+}
+
+.client-list-card {
+  background: hsla(var(--muted) / 0.7);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+  padding: 32px 24px;
+  width: 100%;
+  min-width: 300px;
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+  .client-layout {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+  .client-form-card,
+  .client-list-card {
+    padding: 16px 8px;
+    margin: 0;
+    max-width: 100%;
+  }
+}
