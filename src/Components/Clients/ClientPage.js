@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ClientForm from "./ClientForm";
+import ClientList from "./ClientList";
 import { listClients } from "../../Services/ClientService";
 import "./ClientPage.css";
 
@@ -23,21 +24,7 @@ const ClientPage = () => {
         <div className="client-form-card">
           <ClientForm onCreate={handleClientCreated} />
         </div>
-        <div className="client-list-card">
-          <h2>Lista de Clientes</h2>
-          {error && <p className="message error">{error}</p>}
-          {clients.length === 0 ? (
-            <p>Nenhum cliente cadastrado.</p>
-          ) : (
-            <ul>
-              {clients.map((client) => (
-                <li key={client.id}>
-                  <strong>{client.name}</strong> | {client.email} | {client.phone} | Status: {client.status}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <ClientList clients={clients} error={error} />
       </div>
     </div>
   );
