@@ -47,7 +47,7 @@ const OrderPage = () => {
   }
 
   return (
-    <div className="order-page">
+    <div className="orders-page">
       <OrderForm onAddOrder={handleAddOrder} />
       <OrderList pedidos={orders} />
     </div>
