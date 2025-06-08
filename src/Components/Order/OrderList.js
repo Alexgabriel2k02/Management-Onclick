@@ -24,7 +24,7 @@ const OrderList = ({ pedidos, message }) => {
           <div key={pedido.id} className="order-card order-card-row">
             {pedido.product && pedido.product.img && (
               <img
-                src={pedido.product.img}
+                src={`http://localhost:5000/${pedido.product.img}`}
                 alt={pedido.product.name}
                 className="order-product-img"
               />
