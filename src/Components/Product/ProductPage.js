@@ -74,6 +74,20 @@ const ProductPage = () => {
     }
   };
 
+  // Copiar produto
+  const handleCopyProduct = async (product) => {
+    // Crie um novo objeto sem o id
+    const newProduct = {
+      name: product.name,
+      price: product.price,
+      stock: product.stock,
+      img: product.img,
+      status: product.status,
+    };
+    const created = await createProduct(newProduct);
+    setProducts((prev) => [...prev, created]);
+  };
+
   if (loading) {
     return <p>Carregando produtos...</p>;
   }
@@ -90,7 +104,8 @@ const ProductPage = () => {
           products={products}
           onDeleteProduct={handleDeleteProduct}
           onEditProduct={handleEditProduct}
-          onToggleStatus={handleToggleStatus} 
+          onToggleStatus={handleToggleStatus}
+          onCopyProduct={handleCopyProduct} // Adicione esta linha
         />
       </div>
     </div>

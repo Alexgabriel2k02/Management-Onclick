@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./ProductList.css";
 
-const ProductList = ({ products, onDeleteProduct, onEditProduct }) => {
+const ProductList = ({ products, onDeleteProduct, onEditProduct, onCopyProduct }) => {
   if (!products || products.length === 0) {
     return <p>Nenhum produto cadastrado.</p>;
   }
@@ -45,6 +45,13 @@ const ProductList = ({ products, onDeleteProduct, onEditProduct }) => {
                 >
                   Excluir
                 </button>
+                <button
+                  className="btn-copy"
+                  onClick={() => onCopyProduct(product)}
+                  aria-label={`Copiar produto ${product.name}`}
+                >
+                  Copiar
+                </button>
               </div>
             </li>
           ))}
@@ -67,6 +74,7 @@ ProductList.propTypes = {
   ).isRequired,
   onDeleteProduct: PropTypes.func.isRequired,
   onEditProduct: PropTypes.func.isRequired,
+  onCopyProduct: PropTypes.func.isRequired,
 };
 
 export default ProductList;
