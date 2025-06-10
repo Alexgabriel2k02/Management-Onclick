@@ -83,9 +83,10 @@ const SalePage = () => {
     }
 
     try {
-      await createSale(orderId, {
-        // Não precisa mais de product_id, pois o backend já sabe pelo pedido
+      await createSale({
+        product_id: product.id,
         quantity: parseInt(quantity),
+        order_id: order.id,
         seller_id: sellerId,
       });
       setMessage({ text: "Venda registrada com sucesso!", type: "success" });
