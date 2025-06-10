@@ -30,6 +30,7 @@ const OrderPage = () => {
     try {
       const addedOrder = await fetchWithAuth("/orders", {
         method: "POST",
+        headers: { "Content-Type": "application/json" }, 
         body: JSON.stringify(newOrder),
       });
       setOrders((prevOrders) => [...prevOrders, addedOrder]);
