@@ -150,7 +150,9 @@ const SalePage = () => {
               .map((sale, idx) => {
                 const product = products.find((p) => p.id === sale.product_id);
                 const productName = product ? product.name : `ID: ${sale.product_id}`;
-                const totalPrice = product ? (product.price * sale.quantity).toFixed(2) : "-";
+                const totalPrice = sale.total_price !== undefined
+                  ? Number(sale.total_price).toFixed(2)
+                  : "-";
                 return (
                   <li key={idx} className="sales-history-item">
                     <div className="sale-product-name">{productName}</div>
