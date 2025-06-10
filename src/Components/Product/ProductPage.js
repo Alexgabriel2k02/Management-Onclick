@@ -5,7 +5,8 @@ import {
   listProducts,
   createProduct,
   deleteProduct,
-  updateProduct, // Importe a função updateProduct
+  updateProduct,
+  copyProduct, // Importe aqui!
 } from "../../Services/ProductService";
 import "./ProductPage.css";
 import { useNavigate } from "react-router-dom"; // Adicione esta linha
@@ -74,18 +75,18 @@ const ProductPage = () => {
     }
   };
 
-  // Copiar produto
   const handleCopyProduct = async (product) => {
-    // Crie um novo objeto sem o id
-    const newProduct = {
-      name: product.name,
-      price: product.price,
-      stock: product.stock,
-      img: product.img,
-      status: product.status,
-    };
-    const created = await createProduct(newProduct);
-    setProducts((prev) => [...prev, created]);
+    try {
+      const data = await copyProduct(product.id); 
+      
+      if (response.ok && data.produto) {
+        setProducts((prev) => [...prev, data.produto]);
+      } else {
+        alert(data.mensagem || "Erro ao copiar produto.");
+      }
+    } catch (err) {
+      alert(`Erro ao copiar produto: ${err.message}`);
+    }
   };
 
   if (loading) {
@@ -105,7 +106,7 @@ const ProductPage = () => {
           onDeleteProduct={handleDeleteProduct}
           onEditProduct={handleEditProduct}
           onToggleStatus={handleToggleStatus}
-          onCopyProduct={handleCopyProduct} // Adicione esta linha
+          onCopyProduct={handleCopyProduct}
         />
       </div>
     </div>

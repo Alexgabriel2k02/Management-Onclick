@@ -50,3 +50,10 @@ export const deleteProduct = (productId) => {
   });
 };
 
+export const copyProduct = (productId) => {
+  return fetchWithAuth(`/products/${productId}/copy`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  });
+};
+
