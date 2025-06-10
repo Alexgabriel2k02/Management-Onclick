@@ -4,8 +4,15 @@ import "./OrderList.css";
 
 const statusClass = {
   Pendente: "status-pendente",
+  aprovado: "status-aprovado", 
   Vendido: "status-vendido",
   Cancelado: "status-cancelado",
+};
+
+const formatStatus = (status) => {
+  if (status === "aprovado") return "Vendido";
+  if (!status) return "Pendente";
+  return status;
 };
 
 const OrderList = ({ pedidos, message }) => {
@@ -41,7 +48,7 @@ const OrderList = ({ pedidos, message }) => {
               </div>
               <div>
                 <span className={`status ${statusClass[pedido.status] || ""}`}>
-                  {pedido.status || "Pendente"}
+                  {formatStatus(pedido.status)}
                 </span>
               </div>
             </div>
