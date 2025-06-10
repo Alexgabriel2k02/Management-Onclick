@@ -13,3 +13,14 @@ export const listSales = () => {
     method: "GET",
   });
 };
+
+export const realizarVenda = (orderId, outrosDados) => {
+  return fetchWithAuth("/sales/realizar-venda", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      order_id: orderId,
+      ...outrosDados,
+    }),
+  });
+};

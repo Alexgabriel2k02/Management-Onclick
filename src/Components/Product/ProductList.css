@@ -92,13 +92,13 @@ h2 {
 }
 
 .btn-edit {
-  background-color: #27ae60;
-  color: #fff;
+  background-color: #ffd600; /* Amarelo */
+  color: #222;
   font-weight: bold;
 }
 
 .btn-edit:hover {
-  background-color: hsla(var(--success) / 0.8);
+  background-color: #ffe066; /* Amarelo mais claro */
   transform: scale(1.05);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
@@ -119,6 +119,44 @@ h2 {
 
 .btn-delete:hover {
   background-color: hsla(var(--danger) / 0.8);
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-discount {
+  background-color: #27ae60; /* Verde */
+  color: #fff;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-discount:hover {
+  background-color: hsla(var(--success) / 0.8);
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-copy {
+  background-color: #2196f3; /* Azul */
+  color: #fff;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-copy:hover {
+  background-color: #64b5f6; /* Azul mais claro ao passar o mouse */
   transform: scale(1.05);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }

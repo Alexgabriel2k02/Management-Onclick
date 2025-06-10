@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { listProducts } from "../../Services/ProductService";
+import { listProductsForSale } from "../../Services/ProductService";
 import { createSale, listSales } from "../../Services/SaleService";
+import { listOrders } from "../../Services/OrderService";
 import "./SalePage.css";
 
 const SalePage = () => {
   const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState("");
   const [quantity, setQuantity] = useState("");
   const [message, setMessage] = useState({ text: "", type: "" });
   const [salesHistory, setSalesHistory] = useState([]);
+  const [orderId, setOrderId] = useState("");
+  const [orders, setOrders] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
   const sellerId = user?.id;
 
@@ -16,14 +18,14 @@ const SalePage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await listProducts();
-        setProducts(data.filter(product => product.quantity > 0));
+        const data = await listProductsForSale();
+        setProducts(data);
+        console.log("Produtos para venda:", data.map(p => ({ id: p.id, type: typeof p.id })));
       } catch (error) {
-        console.error("Erro ao buscar produtos:", error);
+        console.error("Erro ao buscar produtos para venda:", error);
         setMessage({ text: "Erro ao carregar produtos.", type: "error" });
       }
     };
-
     fetchProducts();
   }, []);
 
@@ -37,16 +39,41 @@ const SalePage = () => {
         console.error("Erro ao buscar histórico de vendas:", error);
       }
     };
-
     fetchSalesHistory();
+  }, []);
+
+  // Buscar pedidos não aprovados
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const data = await listOrders();
+        setOrders(data.filter(order => order.status !== "aprovado"));
+        // Veja os product_id dos pedidos
+        console.log("Pedidos:", data.map(o => ({ id: o.id, product_id: o.product_id, type: typeof o.product_id })));
+      } catch (error) {
+        console.error("Erro ao buscar pedidos:", error);
+      }
+    };
+    fetchOrders();
   }, []);
 
   const handleSale = async (e) => {
     e.preventDefault();
 
-    const product = products.find((p) => p.id === parseInt(selectedProduct));
+    if (!orderId) {
+      setMessage({ text: "Selecione um pedido.", type: "error" });
+      return;
+    }
+
+    const order = orders.find(o => o.id === parseInt(orderId));
+    if (!order) {
+      setMessage({ text: "Pedido inválido.", type: "error" });
+      return;
+    }
+
+    const product = products.find(p => String(p.id) === String(order.product_id));
     if (!product) {
-      setMessage({ text: "Produto inválido.", type: "error" });
+      setMessage({ text: "Produto do pedido não encontrado.", type: "error" });
       return;
     }
 
@@ -55,17 +82,15 @@ const SalePage = () => {
       return;
     }
 
-    const newSale = {
-      product_id: product.id,
-      quantity: parseInt(quantity),
-      seller_id: sellerId, 
-    };
-
     try {
-      await createSale(newSale);
+      await createSale(orderId, {
+        // Não precisa mais de product_id, pois o backend já sabe pelo pedido
+        quantity: parseInt(quantity),
+        seller_id: sellerId,
+      });
       setMessage({ text: "Venda registrada com sucesso!", type: "success" });
       setQuantity("");
-      setSelectedProduct("");
+      setOrderId("");
 
       // Atualiza o histórico após registrar a venda
       const sales = await listSales();
@@ -85,16 +110,19 @@ const SalePage = () => {
         <div className="form-card">
           <h2>Realizar Venda</h2>
           <form onSubmit={handleSale}>
-            <label>Produto:</label>
+            <label>Pedido:</label>
             <select
-              value={selectedProduct}
-              onChange={(e) => setSelectedProduct(e.target.value)}
+              value={orderId}
+              onChange={(e) => setOrderId(e.target.value)}
               required
             >
-              <option value="">Selecione um produto</option>
-              {products.map((product) => (
-                <option key={product.id} value={product.id}>
-                  {product.name} - R$ {product.price.toFixed(2)} (Estoque: {product.quantity})
+              <option value="">Selecione um pedido</option>
+              {orders.map(order => (
+                <option key={order.id} value={order.id}>
+                  Pedido #{order.id}
+                  {" - Cliente: "}{order.client?.name || order.client?.nome || "Cliente"}
+                  {" - Produto: "}{order.product?.name || order.product?.nome || "?"}
+                  {" - Status: "}{order.status}
                 </option>
               ))}
             </select>
@@ -117,7 +145,7 @@ const SalePage = () => {
           <ul className="sales-history-list">
             {salesHistory.length === 0 && <li>Nenhuma venda registrada.</li>}
             {salesHistory
-            .filter(sale => sale.seller_id === sellerId) // Mostra só vendas do seller logado
+              .filter(sale => sale.seller_id === sellerId)
               .map((sale, idx) => {
                 const product = products.find((p) => p.id === sale.product_id);
                 const productName = product ? product.name : `ID: ${sale.product_id}`;

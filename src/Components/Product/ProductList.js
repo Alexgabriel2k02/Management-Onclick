@@ -2,7 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./ProductList.css";
 
-const ProductList = ({ products, onDeleteProduct, onEditProduct, onCopyProduct }) => {
+const ProductList = ({
+  products,
+  onDeleteProduct,
+  onEditProduct,
+  onCopyProduct,
+  onDiscount, // Adicione esta linha
+}) => {
   if (!products || products.length === 0) {
     return <p>Nenhum produto cadastrado.</p>;
   }
@@ -25,9 +31,21 @@ const ProductList = ({ products, onDeleteProduct, onEditProduct, onCopyProduct }
               <div className="product-info">
                 <div className="product-name">{product.name}</div>
                 <div className="product-details">
-                  <span className="product-price">Preço: <b>R$ {Number(product.price).toFixed(2)}</b></span>
-                  <span className="product-quantity"> | Estoque: <b>{product.quantity}</b></span>
-                  <span className="product-status"> | Status: <b>{product.status}</b></span>
+                  <span className="product-price">
+                    Preço: <b>R$ {Number(product.price).toFixed(2)}</b>
+                  </span>
+                  <span className="product-quantity">
+                    {" "}
+                    | Estoque: <b>{product.quantity}</b>
+                  </span>
+                  <span className="product-status">
+                    {" "}
+                    | Status: <b>{product.status}</b>
+                  </span>
+                  <span className="product-seller">
+                    {" "}
+                    | Seller: <b>{product.seller || "-"}</b>
+                  </span>
                 </div>
               </div>
               <div className="product-actions">
@@ -52,6 +70,13 @@ const ProductList = ({ products, onDeleteProduct, onEditProduct, onCopyProduct }
                 >
                   Copiar
                 </button>
+                <button
+                  className="btn-discount"
+                  onClick={() => onDiscount(product)}
+                  aria-label={`Aplicar desconto ao produto ${product.name}`}
+                >
+                  Desconto
+                </button>
               </div>
             </li>
           ))}
@@ -68,13 +93,15 @@ ProductList.propTypes = {
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
       price: PropTypes.number.isRequired,
-      stock: PropTypes.number.isRequired,
+      quantity: PropTypes.number.isRequired,
       status: PropTypes.string.isRequired,
+      seller: PropTypes.string, // Adicione seller aqui
     })
   ).isRequired,
   onDeleteProduct: PropTypes.func.isRequired,
   onEditProduct: PropTypes.func.isRequired,
   onCopyProduct: PropTypes.func.isRequired,
+  onDiscount: PropTypes.func.isRequired, // Adicione esta linha
 };
 
 export default ProductList;

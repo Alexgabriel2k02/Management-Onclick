@@ -6,7 +6,8 @@ import {
   createProduct,
   deleteProduct,
   updateProduct,
-  copyProduct, // Importe aqui!
+  copyProduct,
+  applyDiscount, // Adicione aqui!
 } from "../../Services/ProductService";
 import "./ProductPage.css";
 import { useNavigate } from "react-router-dom"; // Adicione esta linha
@@ -77,15 +78,31 @@ const ProductPage = () => {
 
   const handleCopyProduct = async (product) => {
     try {
-      const data = await copyProduct(product.id); 
-      
-      if (response.ok && data.produto) {
+      const data = await copyProduct(product.id);
+
+      if (data.produto) {
         setProducts((prev) => [...prev, data.produto]);
       } else {
         alert(data.mensagem || "Erro ao copiar produto.");
       }
     } catch (err) {
       alert(`Erro ao copiar produto: ${err.message}`);
+    }
+  };
+
+  const handleDiscountProduct = async (product) => {
+    try {
+      const data = await applyDiscount(product.id);
+
+      if (data.produto) {
+        setProducts((prevProducts) =>
+          prevProducts.map((p) => (p.id === product.id ? data.produto : p))
+        );
+      } else {
+        alert(data.mensagem || "Erro ao aplicar desconto.");
+      }
+    } catch (err) {
+      alert(`Erro ao aplicar desconto: ${err.message}`);
     }
   };
 
@@ -107,6 +124,7 @@ const ProductPage = () => {
           onEditProduct={handleEditProduct}
           onToggleStatus={handleToggleStatus}
           onCopyProduct={handleCopyProduct}
+          onDiscount={handleDiscountProduct} // Adicione esta linha
         />
       </div>
     </div>

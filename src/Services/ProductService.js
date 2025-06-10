@@ -57,3 +57,24 @@ export const copyProduct = (productId) => {
   });
 };
 
+export const applyDiscount = (productId) => {
+  return fetchWithAuth(`/products/${productId}/discount`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  });
+};
+
+export const listProductsForSale = async () => {
+  const token = localStorage.getItem("token");
+  const response = await fetch("http://localhost:5000/products/for-sale", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Erro ao buscar produtos para venda");
+  }
+  return response.json();
+};
+
