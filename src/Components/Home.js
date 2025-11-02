@@ -1,13 +1,15 @@
 import React from "react";
 import "./Home.css";
+import CartIcon from "./Cart/CartIcon";
 
 const Home = () => {
   return (
     <div className="App">
-      <header>
+      <header className="home-header">
         <h1>
           <span className="text-primary">MERCADO</span> ONCLICK
         </h1>
+        <CartIcon />
       </header>
 
       <div className="container">

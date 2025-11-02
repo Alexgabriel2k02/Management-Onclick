@@ -9,6 +9,7 @@ import {
   copyProduct,
   applyDiscount, // Adicione aqui!
 } from "../../Services/ProductService";
+import CartService from "../../Services/CartService";
 import "./ProductPage.css";
 import { useNavigate } from "react-router-dom"; // Adicione esta linha
 
@@ -106,6 +107,24 @@ const ProductPage = () => {
     }
   };
 
+  const handleAddToCart = (product) => {
+    try {
+      CartService.addItem({
+        id: product.id,
+        name: product.name,
+        price: Number(product.price),
+        img: product.img,
+      }, 1);
+      // opcional: notificar o usuário
+      alert(`${product.name} adicionado ao carrinho.`);
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao adicionar ao carrinho.");
+    }
+  };
+
+  
+
   if (loading) {
     return <p>Carregando produtos...</p>;
   }
@@ -125,6 +144,7 @@ const ProductPage = () => {
           onToggleStatus={handleToggleStatus}
           onCopyProduct={handleCopyProduct}
           onDiscount={handleDiscountProduct} // Adicione esta linha
+          onAddToCart={handleAddToCart}
         />
       </div>
     </div>

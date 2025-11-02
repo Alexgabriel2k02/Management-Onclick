@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./ProductList.css";
 
@@ -8,6 +9,7 @@ const ProductList = ({
   onEditProduct,
   onCopyProduct,
   onDiscount, // Adicione esta linha
+  onAddToCart,
 }) => {
   if (!products || products.length === 0) {
     return <p>Nenhum produto cadastrado.</p>;
@@ -15,7 +17,10 @@ const ProductList = ({
 
   return (
     <div className="container">
-      <h2>Lista de Produtos</h2>
+      <div className="product-header" style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <h2>Lista de Produtos</h2>
+        <Link to="/cart" className="btn-group">Ver Carrinho</Link>
+      </div>
       <div className="produtos-list">
         <ul>
           {products.map((product) => (
@@ -77,6 +82,13 @@ const ProductList = ({
                 >
                   Desconto
                 </button>
+                <button
+                  className="btn-addcart"
+                  onClick={() => onAddToCart && onAddToCart(product)}
+                  aria-label={`Adicionar ${product.name} ao carrinho`}
+                >
+                  Adicionar ao carrinho
+                </button>
               </div>
             </li>
           ))}
@@ -102,6 +114,7 @@ ProductList.propTypes = {
   onEditProduct: PropTypes.func.isRequired,
   onCopyProduct: PropTypes.func.isRequired,
   onDiscount: PropTypes.func.isRequired, // Adicione esta linha
+  onAddToCart: PropTypes.func,
 };
 
 export default ProductList;
