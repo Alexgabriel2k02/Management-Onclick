@@ -7,6 +7,7 @@ import ProductPage from "../Components/Product/ProductPage";
 import SellerPage from "../Components/Seller/SellerPage";
 import OrderPage from "../Components/Order/OrderPage";
 import SalePage from "../Components/Sale/SalePage";
+import SalesHistory from "../Components/Sale/SalesHistory";
 import CartPage from "../Components/Cart/CartPage";
 import SellerActivationPage from "../Components/Auth/SellerActivationPage";
 import ProductEditForm from "../Components/Product/ProductEditForm";
@@ -36,6 +37,7 @@ const AppRoutes = () => {
       <Route path="/seller" element={isAuthenticated ? <SellerPage /> : <Navigate to="/login" />} />
       <Route path="/order" element={isAuthenticated ? <OrderPage /> : <Navigate to="/login" />} />
       <Route path="/sale" element={isAuthenticated ? <SalePage /> : <Navigate to="/login" />} />
+      <Route path="/sales-history" element={isAuthenticated ? <SalesHistory /> : <Navigate to="/login" />} />
       <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
       <Route path="/inicio-vendedor" element={<SellerHome />} />
       <Route path="/client" element={isAuthenticated ? <ClientPage /> : <Navigate to="/login" />} />
